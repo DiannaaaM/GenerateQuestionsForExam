@@ -9,29 +9,31 @@ import java.util.Map;
 
 @Component
 public class Question {
-    private Map<String, String> questions;
+    private String question;
+    private String answer;
 
-    public Question() {
-        questions = new HashMap<>();
-        questions.put("Столица Франци это...", "Париж");
-        questions.put("Кто написал 'Война и мир'?", "Толстой");
-        questions.put("Как переводится слово'Laptop' с английского?", "Ноутбук");
-    }
-    public void addQuestion(String question, String answer) {
-        questions.put(question, answer);
-    }
-    public void removeQuestion(String question) {
-        questions.remove(question);
+    public Question(String question, String answer) {
+        this.question = question;
+        this.answer = answer;
     }
 
-    public Map<String, String> getQuestions() {
-        return questions;
+    public String getAnswer() {
+        return answer;
     }
 
-    public Map.Entry<String, String> getRandomQuestion() {
-        int randomIndex = Math.floorMod((int) (Math.random() * questions.size()), questions.size());
+    public void setAnswer(String answer) {
+        this.answer = answer;
+    }
 
-        List<Map.Entry<String, String>> questionEntries = new ArrayList<>(questions.entrySet());
-        return questionEntries.get(randomIndex);
+    public String getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(String question) {
+        this.question = question;
+    }
+    @Override
+    public String toString() {
+        return question + ": " + answer;
     }
 }

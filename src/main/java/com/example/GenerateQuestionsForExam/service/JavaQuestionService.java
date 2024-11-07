@@ -1,45 +1,46 @@
 package com.example.GenerateQuestionsForExam.service;
 
-import com.example.GenerateQuestionsForExam.classes.Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import com.example.GenerateQuestionsForExam.classes.Question;
+import java.util.*;
 
 @Service
-public class JavaQuestionService {
-    private List<String> questions;
-    private List<String> answers;
+public class JavaQuestionService implements QuestionService {
+    private Map<String, String> questions;
 
     @Autowired
-    private final Question questionCl;
-
-    public JavaQuestionService(Question questionCl) {
-        this.questionCl = questionCl;
-        this.questions = new ArrayList<>();
-        this.answers = new ArrayList<>();
+    public JavaQuestionService() {
+        this.questions = new HashMap<>();
     }
 
+    @Override
     public void addQuestion(String question, String answer) {
-        questions.add(question);
-        answers.add(answer);
-        questionCl.addQuestion(question, answer);
+        questions.put(question, answer);
     }
 
+    @Override
     public void removeQuestion(String question, String answer) {
-        questions.remove(question);
-        answers.remove(answer);
-        questionCl.removeQuestion(question);
+
     }
 
-    public Map<String, String> getQuestions(){
-        return questionCl.getQuestions();
+    @Override
+    public void removeQuestion(String question) {
+        questions.remove(question);
     }
-    public List<String> getAnswers(){
-        return answers;
+
+    @Override
+    public Map<String, String> getQuestions() {
+        return questions;
+    }
+
+    @Override
+    public Map.Entry<String, String> getRandomQuestion() {
+        if (questions.isEmpty()) {
+            return null;
+        }
+        int randomIndex = Math.floorMod((int) (Math.random() * questions.size()), questions.size());
+        List<Map.Entry<String, String>> questionEntries = new ArrayList<>(questions.entrySet());
+        return questionEntries.get(randomIndex);
     }
 }

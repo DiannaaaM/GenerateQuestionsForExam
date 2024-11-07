@@ -1,43 +1,60 @@
 package com.example.GenerateQuestionsForExam;
 
-import com.example.GenerateQuestionsForExam.classes.Question;
 import com.example.GenerateQuestionsForExam.service.JavaQuestionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.mockito.Mockito.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-class JavaQuestionServiceTest {
+import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.*;
+
+@ExtendWith(MockitoExtension.class)
+public class JavaQuestionServiceTest {
+
+    @InjectMocks
     private JavaQuestionService javaQuestionService;
-    private Question question;
 
     @BeforeEach
-    void setUp() {
-        question = mock( Question.class );
-        javaQuestionService = new JavaQuestionService( question );
+    public void setUp() {
+        javaQuestionService = new JavaQuestionService();
     }
 
     @Test
-    void addQuestion() {
-        // Mock the behavior of question.addQuestion
-        doNothing().when( question ).addQuestion( "Question 1", "Answer 1" );
-
-        // Call the addQuestion method
-        javaQuestionService.addQuestion( "Question 1", "Answer 1" );
-
-        // Verify that the question was added to the question class
-        verify( question, times( 1 ) ).addQuestion( "Question 1", "Answer 1" );
+    public void testAddQuestion() {
+        javaQuestionService.addQuestion("What is Java?", "Java is a programming language.");
+        Map<String, String> questions = javaQuestionService.getQuestions();
+        assertEquals(1, questions.size());
+        assertTrue(questions.containsKey("What is Java?"));
+        assertEquals("Java is a programming language.", questions.get("What is Java?"));
     }
 
     @Test
-    void removeQuestion() {
-        // Mock the behavior of question.removeQuestion
-        doNothing().when( question ).removeQuestion( "Question 1" );
+    public void testRemoveQuestion() {
+        javaQuestionService.addQuestion("What is Java?", "Java is a programming language.");
+        javaQuestionService.removeQuestion("What is Java?", "Java is a programming language." );
+        Map<String, String> questions = javaQuestionService.getQuestions();
+        assertEquals(1, questions.size());
+    }
 
-        // Call the removeQuestion method
-        javaQuestionService.removeQuestion( "Question 1", "Answer 1" );
+    @Test
+    public void testGetQuestions() {
+        javaQuestionService.addQuestion("What is Java?", "Java is a programming language.");
+        javaQuestionService.addQuestion("What is Spring?", "Spring is a framework.");
+        Map<String, String> questions = javaQuestionService.getQuestions();
+        assertEquals(2, questions.size());
+        assertTrue(questions.containsKey("What is Java?"));
+        assertTrue(questions.containsKey("What is Spring?"));
+    }
 
-        // Verify that the question was removed from the question class
-        verify( question, times( 1 ) ).removeQuestion( "Question 1" );
+    @Test
+    public void testGetRandomQuestion() {
+        javaQuestionService.addQuestion("What is Java?", "Java is a programming language.");
+        javaQuestionService.addQuestion("What is Spring?", "Spring is a framework.");
+        Map.Entry<String, String> randomQuestion = javaQuestionService.getRandomQuestion();
+        assertNotNull(randomQuestion);
+        assertTrue(javaQuestionService.getQuestions().containsKey(randomQuestion.getKey()));
     }
 }
