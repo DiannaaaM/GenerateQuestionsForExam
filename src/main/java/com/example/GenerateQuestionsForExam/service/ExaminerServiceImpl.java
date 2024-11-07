@@ -29,8 +29,8 @@ public class ExaminerServiceImpl {
             throw new BAD_REQUEST( "Too large request for number of questions" );
         } else {
             while (questions.size() < numQuestions) {
-                Map<String, String> question = (Map<String, String>) questionService.getRandomQuestion();
-                questions.add( (Question) question.keySet() );
+                Set<String> question = (Set<String>) questionService.getRandomQuestion();
+                questions.add( (Question) question );
             }
         }
         return questions;

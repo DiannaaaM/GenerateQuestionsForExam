@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 public class ExaminerService {
@@ -17,7 +18,7 @@ public class ExaminerService {
     }
 
 
-    public Map<String, String> getQuestions(){
+    public Set<String> getQuestions(){
         return javaQuestionService.getQuestions();
     }
 }

@@ -8,6 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Map;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,28 +26,28 @@ public class JavaQuestionServiceTest {
     @Test
     public void testAddQuestion() {
         javaQuestionService.addQuestion("What is Java?", "Java is a programming language.");
-        Map<String, String> questions = javaQuestionService.getQuestions();
+        Set<String> questions = javaQuestionService.getQuestions();
         assertEquals(1, questions.size());
-        assertTrue(questions.containsKey("What is Java?"));
-        assertEquals("Java is a programming language.", questions.get("What is Java?"));
+        assertTrue(questions.contains("What is Java?"));
     }
 
     @Test
     public void testRemoveQuestion() {
         javaQuestionService.addQuestion("What is Java?", "Java is a programming language.");
         javaQuestionService.removeQuestion("What is Java?", "Java is a programming language." );
-        Map<String, String> questions = javaQuestionService.getQuestions();
-        assertEquals(1, questions.size());
+        Set<String> questions = javaQuestionService.getQuestions();
+        assertEquals(0, questions.size());
+        assertFalse(questions.contains("What is Java?"));
     }
 
     @Test
     public void testGetQuestions() {
         javaQuestionService.addQuestion("What is Java?", "Java is a programming language.");
         javaQuestionService.addQuestion("What is Spring?", "Spring is a framework.");
-        Map<String, String> questions = javaQuestionService.getQuestions();
+        Set<String> questions = javaQuestionService.getQuestions();
         assertEquals(2, questions.size());
-        assertTrue(questions.containsKey("What is Java?"));
-        assertTrue(questions.containsKey("What is Spring?"));
+        assertTrue(questions.contains("What is Java?"));
+        assertTrue(questions.contains("What is Spring?"));
     }
 
     @Test
@@ -55,6 +56,6 @@ public class JavaQuestionServiceTest {
         javaQuestionService.addQuestion("What is Spring?", "Spring is a framework.");
         Map.Entry<String, String> randomQuestion = javaQuestionService.getRandomQuestion();
         assertNotNull(randomQuestion);
-        assertTrue(javaQuestionService.getQuestions().containsKey(randomQuestion.getKey()));
+        assertTrue(javaQuestionService.getQuestions().contains(randomQuestion.getKey()));
     }
 }

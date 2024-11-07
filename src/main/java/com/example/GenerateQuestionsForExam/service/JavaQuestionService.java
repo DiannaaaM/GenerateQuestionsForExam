@@ -5,33 +5,42 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+
 @Service
 public class JavaQuestionService implements QuestionService {
-    private Map<String, String> questions;
+    private Set<String> questions;
+    private Set<String> answers;
 
     @Autowired
     public JavaQuestionService() {
-        this.questions = new HashMap<>();
+        this.questions = new HashSet<>();
+        this.answers = new HashSet<>();
     }
 
     @Override
     public void addQuestion(String question, String answer) {
-        questions.put(question, answer);
-    }
-
-    @Override
-    public void removeQuestion(String question, String answer) {
-
+        questions.add(question);
+        answers.add(answer);
     }
 
     @Override
     public void removeQuestion(String question) {
+
+    }
+
+    public void removeQuestion(String question, String answer) {
         questions.remove(question);
+        answers.remove(answer);
     }
 
     @Override
-    public Map<String, String> getQuestions() {
+    public Set<String> getQuestions() {
         return questions;
+    }
+
+    @Override
+    public Set<String> getAnswers() {
+        return answers;
     }
 
     @Override
@@ -40,7 +49,13 @@ public class JavaQuestionService implements QuestionService {
             return null;
         }
         int randomIndex = Math.floorMod((int) (Math.random() * questions.size()), questions.size());
-        List<Map.Entry<String, String>> questionEntries = new ArrayList<>(questions.entrySet());
-        return questionEntries.get(randomIndex);
+        List<String> questionList = new ArrayList<>(questions);
+        String randomQuestion = questionList.get(randomIndex);
+        // Находим соответствующий ответ
+        String randomAnswer = answers.stream()
+                .filter(answer -> questions.contains(randomQuestion))
+                .findFirst()
+                .orElse(null);
+        return new AbstractMap.SimpleEntry<>(randomQuestion, randomAnswer);
     }
 }

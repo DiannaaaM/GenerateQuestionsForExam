@@ -9,7 +9,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
@@ -25,13 +27,13 @@ public class ExaminerServiceImplTest {
 
     @Test
     public void getQuestions_Success() {
-        Map<String, String> expectedQuestions = new HashMap<>();
-        expectedQuestions.put("Question 1", "Answer 1");
-        expectedQuestions.put("Question 2", "Answer 2");
+        Set<String> expectedQuestions = new HashSet<>();
+        expectedQuestions.add("Question 1");
+        expectedQuestions.add("Question 2");
 
         when(javaQuestionService.getQuestions()).thenReturn(expectedQuestions);
 
-        Map<String, String> result = examinerService.getQuestions();
+        Set<String> result = examinerService.getQuestions();
 
         assertEquals(expectedQuestions, result);
     }
