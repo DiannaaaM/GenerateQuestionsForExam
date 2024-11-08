@@ -44,7 +44,7 @@ public class JavaQuestionService implements QuestionService {
     }
 
     @Override
-    public Map.Entry<String, String> getRandomQuestion() {
+    public Map<String, String> getRandomQuestion() {
         if (questions.isEmpty()) {
             return null;
         }
@@ -56,6 +56,6 @@ public class JavaQuestionService implements QuestionService {
                 .filter(answer -> questions.contains(randomQuestion))
                 .findFirst()
                 .orElse(null);
-        return new AbstractMap.SimpleEntry<>(randomQuestion, randomAnswer);
+        return (Map<String, String>) new AbstractMap.SimpleEntry<>(randomQuestion, randomAnswer);
     }
 }

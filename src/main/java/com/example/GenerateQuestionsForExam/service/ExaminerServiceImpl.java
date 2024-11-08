@@ -15,25 +15,26 @@ public class ExaminerServiceImpl {
 
     @Autowired
     private final QuestionService questionService;
-    private final Question question;
     private Set<Question> questions;
 
-    public ExaminerServiceImpl(QuestionService questionService, Question question) {
+    public ExaminerServiceImpl(QuestionService questionService) {
         this.questionService = questionService;
-        this.question = question;
-        this.questions = new HashSet<>();
     }
 
     public Set<Question> getRandomQuestions(int numQuestions) {
         if (numQuestions > questionService.getQuestions().size()) {
-            throw new BAD_REQUEST( "Too large request for number of questions" );
+            throw new BAD_REQUEST("Слишком большой запрос для количества вопросов");
         } else {
-            while (questions.size() < numQuestions) {
-                Set<String> question = (Set<String>) questionService.getRandomQuestion();
-                questions.add( (Question) question );
+            Set<Question> randomQuestions = new HashSet<>();
+            while (randomQuestions.size() < numQuestions) {
+                Map<String, String> questionData = questionService.getRandomQuestion();
+                String questionText = questionData.keySet().iterator().next();
+                String answer = questionData.get(questionText);
+                Question question = new Question(questionText, answer);
+                randomQuestions.add(question);
             }
+            return randomQuestions;
         }
-        return questions;
     }
 }
 

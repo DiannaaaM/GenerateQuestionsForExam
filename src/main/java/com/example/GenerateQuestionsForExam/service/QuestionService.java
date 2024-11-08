@@ -7,5 +7,5 @@ public interface QuestionService {
     void removeQuestion(String question);
     Set<String> getQuestions();
     Set<String> getAnswers();
-    Map.Entry<String, String> getRandomQuestion();
+    Map<String, String> getRandomQuestion();
 }
