@@ -9,28 +9,28 @@ import java.util.*;
 @Service
 public class JavaQuestionService implements QuestionService {
     private Set<String> questions;
-    private Set<String> answers;
+        int nextId = 1;
+    private Random rand = new Random();
 
     @Autowired
     public JavaQuestionService() {
         this.questions = new HashSet<>();
-        this.answers = new HashSet<>();
     }
 
     @Override
     public void addQuestion(String question, String answer) {
         questions.add(question);
-        answers.add(answer);
+        nextId++;
     }
 
     @Override
     public void removeQuestion(String question) {
-
+        questions.remove(question);
+        nextId--;
     }
 
     public void removeQuestion(String question, String answer) {
         questions.remove(question);
-        answers.remove(answer);
     }
 
     @Override
@@ -40,22 +40,12 @@ public class JavaQuestionService implements QuestionService {
 
     @Override
     public Set<String> getAnswers() {
-        return answers;
+        return Set.of();
     }
 
+
     @Override
-    public Map<String, String> getRandomQuestion() {
-        if (questions.isEmpty()) {
-            return null;
-        }
-        int randomIndex = Math.floorMod((int) (Math.random() * questions.size()), questions.size());
-        List<String> questionList = new ArrayList<>(questions);
-        String randomQuestion = questionList.get(randomIndex);
-        // Находим соответствующий ответ
-        String randomAnswer = answers.stream()
-                .filter(answer -> questions.contains(randomQuestion))
-                .findFirst()
-                .orElse(null);
-        return (Map<String, String>) new AbstractMap.SimpleEntry<>(randomQuestion, randomAnswer);
+    public String getRandomQuestion() {
+        return new ArrayList<>(questions).get( rand.nextInt(questions.size()));
     }
 }

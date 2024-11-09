@@ -1,6 +1,5 @@
 package com.example.GenerateQuestionsForExam.controller;
 
-import com.example.GenerateQuestionsForExam.classes.Question;
 import com.example.GenerateQuestionsForExam.service.ExaminerServiceImpl;
 import com.example.GenerateQuestionsForExam.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,7 @@ public class ExamController {
         this.examinerService = examinerService;
     }
 
-    public Set<Question> getQuestions(@RequestParam("/amount") int amount){
+    public Set<String> getQuestions(@RequestParam("/amount") int amount){
         return examinerService.getRandomQuestions( amount );
     }
 }
